@@ -1,11 +1,922 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <meta
+        name="description"
+        content="Aula gratuita de introdução ao FEO (Fórmula enriquecendo Online), com provas sociais e condição especial de compra."
+    >
     <title>Fórmula Enriquecendo Online</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #ffffff;
+            --text: #0b0b0b;
+            --muted: #0b0b0b;
+            --line: #e9e9e9;
+            --soft: #f7f7f7;
+            --radius: 18px;
+            --content: 980px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: ui-rounded, "Avenir Next", "Nunito", "Trebuchet MS", sans-serif;
+            font-size: 16px;
+            line-height: 1.45;
+            letter-spacing: 0;
+        }
+
+        body.is-modal-open {
+            overflow: hidden;
+        }
+
+        main {
+            width: min(100%, var(--content));
+            margin: 0 auto;
+            padding: 24px 16px 56px;
+        }
+
+        section {
+            padding: 28px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        section:last-child {
+            border-bottom: 0;
+        }
+
+        .hero {
+            width: 100vw;
+            margin: -24px calc(50% - 50vw) 0;
+            padding: 28px 16px 34px;
+            border-bottom: 0;
+            background: #000;
+            color: #fff;
+        }
+
+        .hero-content {
+            width: min(100%, var(--content));
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 24px;
+            line-height: 1.12;
+            color: #fff;
+        }
+
+        .brand-logo {
+            display: block;
+            width: min(220px, 62vw);
+            height: auto;
+            margin-bottom: 18px;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin: 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: 800;
+        }
+
+        h1 {
+            max-width: 760px;
+            font-size: 36px;
+            line-height: 1.04;
+        }
+
+        h2 {
+            font-size: 26px;
+            line-height: 1.12;
+        }
+
+        .lead,
+        .section-copy,
+        .fineprint {
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 680px;
+            margin-top: 12px;
+            font-size: 17px;
+        }
+
+        .section-head {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .section-copy {
+            max-width: 680px;
+        }
+
+        .video-frame {
+            position: relative;
+            margin-top: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: var(--radius);
+            background: #000;
+            aspect-ratio: 16 / 9;
+        }
+
+        .hero-video {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .video-play-button {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            border: 0;
+            background: rgba(0, 0, 0, 0.24);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .video-frame.is-playing .video-play-button {
+            display: none;
+        }
+
+        .play-icon {
+            display: grid;
+            width: 72px;
+            height: 72px;
+            place-items: center;
+            border-radius: 999px;
+            background: #fff;
+            color: #0b0b0b;
+            font-size: 30px;
+            line-height: 1;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+        }
+
+        .delayed-checkout {
+            display: none;
+            margin-top: 18px;
+        }
+
+        .delayed-checkout.is-visible {
+            display: block;
+        }
+
+        .hero .delayed-checkout .cta {
+            background: #fff;
+            color: #0b0b0b;
+        }
+
+        .carousel-wrap {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(3, 1fr);
+            grid-auto-columns: min(calc((100% - 16px) / 3), 180px);
+            gap: 8px;
+            width: 100%;
+            margin: 0;
+            padding: 2px 0 14px;
+            list-style: none;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x proximity;
+            scroll-padding-left: 1px;
+            touch-action: pan-x pinch-zoom;
+            overscroll-behavior-inline: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carousel::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .carousel::-webkit-scrollbar-track {
+            background: var(--soft);
+            border-radius: 999px;
+        }
+
+        .carousel::-webkit-scrollbar-thumb {
+            background: #cfcfcf;
+            border-radius: 999px;
+        }
+
+        .proof-card {
+            scroll-snap-align: start;
+        }
+
+        .proof-card figure {
+            margin: 0;
+        }
+
+        .zoom-trigger {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--soft);
+            cursor: zoom-in;
+            overflow: hidden;
+            aspect-ratio: 3 / 4;
+            touch-action: pan-x pinch-zoom;
+        }
+
+        .proof-card img {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 160ms ease;
+        }
+
+        .proof-card img.is-loaded {
+            opacity: 1;
+        }
+
+        .fallback {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+            padding: 16px;
+            color: var(--muted);
+            font: inherit;
+            text-align: center;
+        }
+
+        .purchase-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .availability,
+        .price-box {
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--soft);
+        }
+
+        .availability {
+            border-color: #0b0b0b;
+            background: #fff;
+            font-size: 18px;
+        }
+
+        .price-box {
+            border-color: #0b0b0b;
+            border-width: 2px;
+            background: #fff;
+            color: #0b0b0b;
+        }
+
+        .price-label,
+        .price-from {
+            font-size: 15px;
+        }
+
+        .price-from {
+            margin-top: 14px;
+        }
+
+        .price-from s {
+            color: #777;
+        }
+
+        .price-main {
+            margin-top: 8px;
+            font-size: 24px;
+            line-height: 1.15;
+        }
+
+        .price-main span {
+            display: block;
+            margin-top: 6px;
+            font-size: 38px;
+            font-weight: 800;
+        }
+
+        .price-cash {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .cta {
+            display: inline-flex;
+            width: 100%;
+            min-height: 54px;
+            margin-top: 16px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: #0b0b0b;
+            color: #fff;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .mentor-section {
+            display: grid;
+            gap: 18px;
+        }
+
+        .mentor-card {
+            min-height: 0;
+            overflow: hidden;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            background: #fff;
+            color: #0b0b0b;
+        }
+
+        .mentor-card::after {
+            content: none;
+        }
+
+        .mentor-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .mentor-copy {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .mentor-copy h2 {
+            color: #0b0b0b;
+            font-size: 28px;
+        }
+
+        .mentor-copy p {
+            color: #0b0b0b;
+            font-size: 15px;
+            line-height: 1.38;
+        }
+
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.94);
+        }
+
+        .image-modal.is-open {
+            display: flex;
+        }
+
+        .modal-image {
+            display: block;
+            max-width: min(100%, 920px);
+            max-height: 84vh;
+            border-radius: 14px;
+            box-shadow: 0 22px 70px rgba(0, 0, 0, 0.18);
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        @media (min-width: 720px) {
+            main {
+                padding: 40px 24px 72px;
+            }
+
+            .hero {
+                margin-top: -40px;
+                padding: 44px 24px 50px;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            h1 {
+                font-size: 54px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 34px;
+            }
+
+            .carousel {
+                gap: 10px;
+                grid-auto-columns: min(calc((100% - 20px) / 3), 190px);
+            }
+
+            .purchase-grid {
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+            }
+
+            .mentor-card {
+                position: relative;
+                min-height: 420px;
+                border: 0;
+                background: #0b0b0b;
+                color: #fff;
+            }
+
+            .mentor-card::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.76));
+                pointer-events: none;
+            }
+
+            .mentor-card.is-left::after {
+                background: linear-gradient(90deg, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.2) 56%, rgba(0, 0, 0, 0.08));
+            }
+
+            .mentor-copy {
+                position: relative;
+                z-index: 1;
+                width: min(100%, 560px);
+                min-height: 420px;
+                padding: 34px;
+                align-content: center;
+            }
+
+            .mentor-card img {
+                position: absolute;
+                inset: 0;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .mentor-copy h2 {
+                color: #fff;
+            }
+
+            .mentor-copy h2 {
+                font-size: 32px;
+            }
+
+            .mentor-copy p {
+                color: rgba(255, 255, 255, 0.92);
+                font-size: 16px;
+            }
+
+            .mentor-card.is-right .mentor-copy {
+                margin-left: auto;
+            }
+
+            .mentor-card.is-left .mentor-copy {
+                margin-right: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    Esse é o fórmula
+    <main>
+        <section class="hero" id="topo">
+            <div class="hero-content">
+                <img class="brand-logo" src="publi/logo.webp" alt="Fórmula Enriquecendo Online" decoding="async">
+                <h1>Aula gratuita - Introdução ao FEO (Fórmula Enriquecendo Online).</h1>
+
+                <div class="video-frame" id="videoFrame" aria-label="Vídeo de introdução">
+                    <video
+                        class="hero-video"
+                        id="introVideo"
+                        playsinline
+                        preload="metadata"
+                        controlslist="nodownload noplaybackrate noremoteplayback"
+                        disablepictureinpicture
+                    >
+                        <source src="video/video.mp4" type="video/mp4">
+                        Seu navegador não suporta reprodução de vídeo HTML5.
+                    </video>
+                    <button class="video-play-button" id="videoPlayButton" type="button" aria-label="Iniciar aula">
+                        <span class="play-icon" aria-hidden="true">▶</span>
+                    </button>
+                </div>
+
+                <div class="delayed-checkout" id="delayedCheckout" aria-live="polite">
+                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8">Ir para checkout</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="provas-sociais">
+            <div class="section-head">
+                <h2>Provas sociais</h2>
+                <p class="section-copy">Arraste para o lado para ver mais resultados. Toque em qualquer imagem para ampliar.</p>
+            </div>
+
+            <div class="carousel-wrap">
+                <ul class="carousel" id="proofCarousel" aria-label="Carrossel de provas sociais"></ul>
+            </div>
+        </section>
+
+        <section class="mentor-section" id="sobre-o-mentor">
+            <article class="mentor-card is-right">
+                <img src="publi/1.jpg" alt="Tondimas Tôrres, mentor do Fórmula Enriquecendo Online" loading="lazy" decoding="async">
+                <div class="mentor-copy">
+                    <h2>Quem é Tondimas Tôrres?</h2>
+                    <p>Tondimas Tôrres cresceu em uma cidade de 7 mil habitantes no interior de Goiás. Na infância, muitas vezes ia ao lixão para apanhar latinha e ferro velho, vender e ajudar nas necessidades financeiras de casa.</p>
+                    <p>Hoje é fundador de um dos maiores movimentos de educação e empreendedorismo da América Latina, com mais de 178 mil alunos em 15 países. Em menos de 3 anos atuando com vendas online, construiu um patrimônio de mais de 25 milhões de reais através do mercado digital.</p>
+                    <p>O Fórmula Enriquecendo Online ensina pessoas comuns e determinadas a ganhar dinheiro na internet de forma segura e honesta, usando apenas o celular conectado à internet e de 30 a 40 minutos por dia.</p>
+                </div>
+            </article>
+
+            <article class="mentor-card is-right">
+                <img src="publi/2.jpg" alt="Fórmula Enriquecendo Online com Tondimas Tôrres" loading="lazy" decoding="async">
+                <div class="mentor-copy">
+                    <h2>O que é o Fórmula Enriquecendo Online?</h2>
+                    <p>O Fórmula Enriquecendo Online não é somente um treinamento que mostra o mapa para conquistar liberdade financeira.</p>
+                    <p>É uma comunidade com mais de 178 mil alunos e um time de 25 colaboradores especialistas no mercado digital, preparada para entregar uma experiência de aprendizado clara, objetiva e transformadora.</p>
+                    <p>Você precisa literalmente de um celular com conexão à internet e cerca de 35 minutos livres por dia.</p>
+                </div>
+            </article>
+
+            <article class="mentor-card is-left">
+                <img src="publi/3.jpg" alt="Área de membros do Fórmula Enriquecendo Online" loading="lazy" decoding="async">
+                <div class="mentor-copy">
+                    <h2>O que você vai encontrar aqui</h2>
+                    <p>A área de membros do Fórmula Enriquecendo Online foi desenvolvida inspirada em plataformas de streaming, com uma navegação mais intuitiva para facilitar o acesso aos conteúdos.</p>
+                    <p>O objetivo é deixar o aprendizado mais simples, prático e direto, para que você saiba exatamente o que assistir e como avançar usando apenas o celular.</p>
+                </div>
+            </article>
+        </section>
+
+        <section id="condicoes">
+            <div class="section-head">
+                <h2>Condições de compra</h2>
+                <p class="section-copy">160 vagas disponíveis com preço promocional:</p>
+            </div>
+
+            <div class="purchase-grid">
+                <div class="price-box">
+                    <p class="price-from">De <s>R$ 600,00</s> por</p>
+                    <p class="price-main">12x de <span>R$ 27,07</span></p>
+                    <p class="price-cash">ou R$ 247,00 à vista</p>
+                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8">Ir para checkout</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="image-modal" id="imageModal" role="dialog" aria-modal="true" aria-label="Imagem ampliada">
+        <button class="modal-close" type="button" aria-label="Fechar imagem ampliada">×</button>
+        <img class="modal-image" id="modalImage" alt="">
+    </div>
+
+    <script>
+        (function () {
+            const videoFrame = document.getElementById('videoFrame');
+            const introVideo = document.getElementById('introVideo');
+            const videoPlayButton = document.getElementById('videoPlayButton');
+            const delayedCheckout = document.getElementById('delayedCheckout');
+
+            if (videoFrame && introVideo && videoPlayButton) {
+                let videoStarted = false;
+                let checkoutTimer = null;
+                const checkoutDelaySeconds = (21 * 60) + 26;
+
+                const revealDelayedCheckout = () => {
+                    if (delayedCheckout) {
+                        delayedCheckout.classList.add('is-visible');
+                    }
+                };
+
+                const playIntroVideo = () => {
+                    videoStarted = true;
+
+                    if (!checkoutTimer) {
+                        checkoutTimer = window.setTimeout(revealDelayedCheckout, checkoutDelaySeconds * 1000);
+                    }
+
+                    const playAttempt = introVideo.play();
+
+                    if (playAttempt && typeof playAttempt.catch === 'function') {
+                        playAttempt.catch(() => {
+                            videoStarted = false;
+                            window.clearTimeout(checkoutTimer);
+                            checkoutTimer = null;
+                            videoFrame.classList.remove('is-playing');
+                        });
+                    }
+                };
+
+                videoPlayButton.addEventListener('click', () => {
+                    videoFrame.classList.add('is-playing');
+                    playIntroVideo();
+                });
+
+                introVideo.addEventListener('play', () => {
+                    videoFrame.classList.add('is-playing');
+                });
+
+                introVideo.addEventListener('ended', () => {
+                    videoStarted = false;
+                    videoFrame.classList.remove('is-playing');
+                });
+
+                introVideo.addEventListener('timeupdate', () => {
+                    if (introVideo.currentTime >= checkoutDelaySeconds) {
+                        revealDelayedCheckout();
+                    }
+                });
+
+                introVideo.addEventListener('pause', () => {
+                    if (videoStarted && !introVideo.ended && !document.hidden) {
+                        playIntroVideo();
+                    }
+                });
+
+                document.addEventListener('visibilitychange', () => {
+                    if (videoStarted && !introVideo.ended && !document.hidden && introVideo.paused) {
+                        playIntroVideo();
+                    }
+                });
+
+                introVideo.addEventListener('contextmenu', (event) => {
+                    event.preventDefault();
+                });
+            }
+
+            const proofImages = [
+                'img/photo_5044301740849081125_x.jpg',
+                'img/photo_5089129560057948920_x.jpg',
+                'img/photo_4917970436092963502_y.jpg',
+                'img/photo_5186294231533204535_x.jpg',
+                'img/photo_5163542514161003368_y.jpg',
+                'img/photo_5089129560057948919_x.jpg',
+                'img/photo_5127632236764572423_x.jpg',
+                'img/photo_5058046615448824395_y.jpg',
+                'img/photo_5060270266046851915_x.jpg',
+                'img/photo_4913555441640909933_x.jpg',
+                'img/photo_4918022310707965037_x.jpg',
+                'img/photo_5186294231533204536_x.jpg',
+                'img/photo_5186294231533204537_x.jpg',
+                'img/photo_4913555441640909935_x.jpg',
+                'img/photo_4920701021680937994_x.jpg',
+                'img/photo_4918339193395063665_y.jpg',
+                'img/photo_4913555441640909934_x.jpg',
+                'img/photo_4999220806332558230_x.jpg',
+                'img/photo_4913555441640909943_x.jpg',
+                'img/photo_5044301740849081124_x.jpg',
+                'img/photo_4954445776566725618_x.jpg',
+                'img/photo_4913555441640909942_x.jpg',
+                'img/photo_5163542514161003367_y.jpg',
+                'img/photo_4915718636279278216_x.jpg',
+                'img/photo_5183888418487249788_x.jpg',
+                'img/photo_4945071817169677087_x.jpg',
+                'img/photo_5030600679210724145_x.jpg',
+                'img/photo_4902201210262629246_x.jpg',
+                'img/photo_4913555441640909932_x.jpg',
+                'img/photo_5046553540662766313_x.jpg',
+                'img/photo_4927364173814410037_x.jpg',
+                'img/photo_5141318381981510401_y.jpg',
+                'img/photo_4938675610138553521_x.jpg',
+                'img/photo_5028348879397038774_y.jpg',
+                'img/photo_5183888418487249793_x.jpg',
+                'img/photo_5183888418487249802_y.jpg',
+                'img/photo_4953971479033260695_y.jpg',
+                'img/photo_5127632236764572425_x.jpg',
+                'img/photo_5003986149856881441_x.jpg',
+                'img/photo_4956697576380410780_y.jpg',
+                'img/photo_5042139954959985448_x.jpg',
+                'img/photo_5139127282940619522_y.jpg',
+                'img/photo_5147946757764786903_y.jpg',
+                'img/photo_4942760656612993513_x.jpg',
+                'img/photo_5134315613899042601_x.jpg',
+                'img/photo_4960781617832504091_x.jpg',
+                'img/photo_5152474954669861808_y.jpg',
+                'img/photo_5082440311703186163_x.jpg',
+                'img/photo_4927364173814410034_y.jpg',
+                'img/photo_5168365208383630145_y.jpg',
+                'img/photo_4943003202006133542_y.jpg',
+                'img/photo_5172625992034921145_y.jpg',
+                'img/photo_4952193976753040460_y.jpg',
+                'img/photo_4927364173814410036_x.jpg',
+                'img/photo_5017369581483830085_y.jpg',
+                'img/photo_5183888418487249784_x.jpg',
+                'img/photo_5127632236764572397_y.jpg',
+                'img/photo_5168365208383630154_y.jpg',
+                'img/photo_4953971479033260686_y.jpg',
+                'img/photo_5082440311703186153_y.jpg',
+                'img/photo_4936186865569082265_y.jpg',
+                'img/photo_5183888418487249808_y.jpg',
+                'img/photo_5127632236764572395_y.jpg',
+                'img/photo_5021762005882743552_y.jpg',
+                'img/photo_5141318381981510406_y.jpg',
+                'img/photo_5141318381981510388_y.jpg',
+                'img/photo_5075876240170265441_y.jpg',
+                'img/photo_4936130481238420791_y.jpg',
+                'img/photo_5183888418487249786_y.jpg',
+                'img/photo_5147946757764786907_y.jpg',
+                'img/photo_5086877760244263619_x.jpg',
+                'img/photo_5058046615448824394_x.jpg',
+                'img/photo_5152474954669861812_y.jpg'
+            ];
+
+            const carousel = document.getElementById('proofCarousel');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalButton = modal ? modal.querySelector('.modal-close') : null;
+
+            if (!carousel || !modal || !modalImage || !closeModalButton) {
+                return;
+            }
+
+            const initialCount = 9;
+            let scrollLeftOnPointerDown = 0;
+
+            carousel.innerHTML = proofImages.map((src, index) => {
+                const encodedSrc = encodeURI(src);
+
+                return `
+                    <li class="proof-card" data-proof-card>
+                        <figure>
+                            <button class="zoom-trigger" type="button" data-zoom-src="${encodedSrc}" aria-label="Ampliar prova social ${index + 1}">
+                                <span class="fallback">Carregando prova ${index + 1}</span>
+                                <img
+                                    alt="Prova social ${index + 1}"
+                                    data-src="${encodedSrc}"
+                                    ${index < initialCount ? `src="${encodedSrc}" loading="eager"` : 'loading="lazy"'}
+                                    decoding="async"
+                                >
+                            </button>
+                        </figure>
+                    </li>
+                `;
+            }).join('');
+
+            const cards = Array.from(carousel.querySelectorAll('[data-proof-card]'));
+            const images = cards.map((card) => card.querySelector('img'));
+
+            const revealImage = (img) => {
+                if (img.dataset.loaded === 'true') {
+                    return;
+                }
+
+                img.dataset.loaded = 'true';
+                img.classList.add('is-loaded');
+
+                const fallback = img.parentElement ? img.parentElement.querySelector('.fallback') : null;
+                if (fallback) {
+                    fallback.remove();
+                }
+            };
+
+            const loadImage = (img) => {
+                if (!img || img.dataset.requested === 'true') {
+                    return;
+                }
+
+                const src = img.dataset.src;
+                if (!src) {
+                    return;
+                }
+
+                img.dataset.requested = 'true';
+                img.addEventListener('load', () => revealImage(img), { once: true });
+                img.addEventListener('error', () => revealImage(img), { once: true });
+
+                if (!img.getAttribute('src')) {
+                    img.src = src;
+                }
+
+                if (img.complete && img.naturalWidth > 0) {
+                    revealImage(img);
+                }
+            };
+
+            const openModal = (src, alt) => {
+                modalImage.src = src;
+                modalImage.alt = alt;
+                modal.classList.add('is-open');
+                document.body.classList.add('is-modal-open');
+                closeModalButton.focus();
+            };
+
+            const closeModal = () => {
+                modal.classList.remove('is-open');
+                document.body.classList.remove('is-modal-open');
+                modalImage.removeAttribute('src');
+            };
+
+            images.slice(0, initialCount).forEach(loadImage);
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target.querySelector('img');
+                            loadImage(img);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: carousel,
+                    rootMargin: '160px',
+                    threshold: 0.01
+                });
+
+                cards.slice(initialCount).forEach((card) => observer.observe(card));
+            } else {
+                images.slice(initialCount).forEach(loadImage);
+            }
+
+            carousel.addEventListener('pointerdown', () => {
+                scrollLeftOnPointerDown = carousel.scrollLeft;
+            });
+
+            carousel.addEventListener('click', (event) => {
+                const trigger = event.target.closest('.zoom-trigger');
+                if (!trigger) {
+                    return;
+                }
+
+                if (Math.abs(carousel.scrollLeft - scrollLeftOnPointerDown) > 6) {
+                    return;
+                }
+
+                const img = trigger.querySelector('img');
+                const src = trigger.dataset.zoomSrc;
+                if (img && src) {
+                    loadImage(img);
+                    openModal(src, img.alt);
+                }
+            });
+
+            closeModalButton.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+                    closeModal();
+                }
+            });
+        }());
+    </script>
 </body>
 </html>
