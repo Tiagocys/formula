@@ -556,6 +556,25 @@
             }
         }
     </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];
+        t=b.createElement(e);t.async=!0;
+        t.src=v;
+        s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s);
+        }(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '1152519933706866');
+        fbq('track', 'PageView');
+    </script>
 </head>
 <body>
     <main>
@@ -582,7 +601,7 @@
                 </div>
 
                 <div class="delayed-checkout" id="delayedCheckout" aria-live="polite">
-                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8">Ir para checkout</a>
+                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8" onclick="fbq('track', 'InitiateCheckout')">Ir para checkout</a>
                 </div>
             </div>
         </section>
@@ -640,7 +659,7 @@
                     <p class="price-from">De <s>R$ 600,00</s> por</p>
                     <p class="price-main">12x de <span>R$ 27,07</span></p>
                     <p class="price-cash">ou R$ 247,00 à vista</p>
-                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8">Ir para checkout</a>
+                    <a class="cta" href="https://go.hotmart.com/T104714502W?ap=a4d8" onclick="fbq('track', 'InitiateCheckout');">Ir para checkout</a>
                 </div>
             </div>
 
@@ -955,6 +974,16 @@
                 }
             });
         }());
+    </script>
+
+    <script type="text/javascript">
+        document.getElementById('delayedCheckout').addEventListener('click', function() {
+            fbq('track', 'InitiateCheckout');
+        }, false);
+
+        document.getElementById('checkout_btn').addEventListener('click', function() {
+            fbq('track', 'InitiateCheckout');
+        }, false);
     </script>
 </body>
 </html>
